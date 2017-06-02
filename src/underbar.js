@@ -47,6 +47,16 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    if( Array.isArray( collection ) ) {
+      for (var i = 0; i < collection.length; i++ ){
+        iterator(collection[i], i, collection);
+      }
+    } else {
+      var keys = Object.keys(collection);
+      for (var i = 0; i < keys.length; i++ ){
+        iterator(collection[keys[i]], keys[i], collection)
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -68,6 +78,13 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var passTest = [];
+
+    _.each(collection, function(item) {
+      if(test(item) === true){ passTest.push(item); }
+    });
+
+    return passTest;
   };
 
   // Return all elements of an array that don't pass a truth test.
@@ -128,6 +145,9 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
   };
+
+// end part 1
+
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
