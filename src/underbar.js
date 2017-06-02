@@ -80,8 +80,8 @@
   _.filter = function(collection, test) {
     var passTest = [];
 
-    _.each(collection, function(item) {
-      if(test(item) === true){ passTest.push(item); }
+    _.each(collection, function(elem) {
+      if(test(elem) === true){ passTest.push(elem); }
     });
 
     return passTest;
@@ -91,10 +91,22 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    // need to have test return opposite of results and filter on those
+    // filter already creates new array
+    return _.filter(collection, function(elem){
+      return !test(elem);
+    });
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    //for each item in an array, check to see if the item index in outarray > -1 to push
+    var outArray = [];
+    _.each(array, function(elem){
+      if( _.indexOf(outArray, elem) < 0 ){ outArray.push(elem); }
+    });
+
+    return outArray;
   };
 
 
@@ -103,6 +115,15 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+
+    //for each elem in a function, apply iterator and push to outArray
+    var outArray = [];
+
+    _.each(collection, function(elem){
+      outArray.push(iterator(elem));
+    })
+
+    return outArray;
   };
 
   /*
@@ -144,6 +165,17 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var sum = accumulator === undefined ? collection[0] : accumulator;
+
+    var i = 0;
+    if(arguments.length < 3) { i += 1 };
+
+    for( i; i < collection.length; i++ ){
+      sum = iterator(sum, collection[i]);
+    }
+
+    return sum;
+
   };
 
 // end part 1
