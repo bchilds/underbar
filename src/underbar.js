@@ -201,12 +201,30 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    // I have an iterator which takes an element and returns t/f
+    // I need to run this function on each element in collection
+    // If any fail, reduce needs to return false. Else, return true.
+    if(iterator === undefined) { iterator = _.identity; }
+    return _.reduce(collection, function(passesTest, item) {
+      if(passesTest){
+        return Boolean(iterator(item)); //returns result of truth test. If true, runs test. If false, doesn't bother.
+      }
+      return passesTest;
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    // return true if at least one result true
+    // if every elem passes the opposite of the the desired result, none meet condition.
+    if(iterator === undefined) { iterator = _.identity; }
+
+    return !( _.every(collection, function(item) {
+      return !( iterator(item) );
+    }) );
+    
   };
 
 
