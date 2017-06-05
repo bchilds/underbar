@@ -165,17 +165,21 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+
     var sum = accumulator === undefined ? collection[0] : accumulator;
 
-    var i = 0;
-    if(arguments.length < 3) { i += 1 };
-
-    for( i; i < collection.length; i++ ){
-      sum = iterator(sum, collection[i]);
+    var collectionToUse;
+    if(arguments.length < 3) { 
+      collectionToUse = collection.slice(1); 
+    } else {
+      collectionToUse = collection;
     }
 
-    return sum;
+    _.each(collectionToUse, function(item){
+      sum = iterator(sum, item);
+    });
 
+      return sum;
   };
 
 // end part 1
