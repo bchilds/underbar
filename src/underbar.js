@@ -295,7 +295,6 @@
     // time it's called.
     var alreadyCalled = false;
     var result;
-
     // TIP: We'll return a new function that delegates to the old one, but only
     // if it hasn't been called before.
     return function() {
@@ -319,6 +318,25 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    //takes in a function
+    //has a results object which stores the value at the property for its argument
+
+    var results = {};
+
+      return function() {
+        //if results.hasOwnProperty(args), return value
+        if ( results.hasOwnProperty(JSON.stringify(arguments)) ){ 
+          return results[JSON.stringify(arguments)];
+          //else
+        } else {
+          //do function
+        var out = func.apply(this, arguments)
+            //create new key/value for that function
+        results[JSON.stringify(arguments)] = out;
+        return out;
+      }
+    }
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -328,6 +346,7 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    
   };
 
 
